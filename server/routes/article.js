@@ -1,7 +1,8 @@
 const router = require('express').Router();
-const { findAll } = require('../controllers/article');
+const { findAll, create } = require('../controllers/article');
 const isLogin = require('../middlewares/isLogin');
 
 router.get('/', findAll);
+router.post('/', isLogin, create);
 
 module.exports = router;

@@ -21,7 +21,24 @@ module.exports = {
   },
 
   create(req, res) {
+    let input = {
+      title: req.body.title,
+      author: req.decoded.id,
+      content: req.body.content
+    }
 
+    Article.create(input)
+    .then(newArticle => {
+      res.status(500).json({
+        message: 'success create new article',
+        article: newArticle
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    });
   },
 
   update(req, res) {
