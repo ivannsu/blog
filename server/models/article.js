@@ -11,7 +11,7 @@ const articleSchema = new Schema({
   content: {
     type: String
   },
-  comments: [{ type: mongoose.Types.ObjectId, ref: 'Comment' }]
+  comments: [{ type: Schema.Types.ObjectId, ref: 'Comment' }]
 }, {
   timestamps: true
 });
