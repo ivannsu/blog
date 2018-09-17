@@ -174,6 +174,7 @@ describe('Article', function() {
   });
 
   it('DELETE /comments/:id - hapus comment berdasarkan id comment', function(done) {
+
     chai.request(app)
     .put(`/comments/${commentId}`)
     .set('token', token)
@@ -183,8 +184,6 @@ describe('Article', function() {
         done();
       } else {
         let response = res.body;
-
-        console.log(response, '<================ DELETE METHOD');
 
         assert.equal(res.status, 200);
         assert.typeOf(response, 'object');
