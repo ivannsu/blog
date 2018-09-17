@@ -22,7 +22,7 @@ describe('Article', function() {
 
     let seed = {
       name: 'ivan',
-      email: 'ivan456@mail.com',
+      email: 'ivan768@mail.com',
       password: '123'
     }
 
@@ -40,12 +40,11 @@ describe('Article', function() {
         articleId = newArticle._id;
         userId = newUser._id;
 
-        let token = jwt.sign({ 
+        let usertoken = jwt.sign({ 
           id: userId, name: newUser.name, email: newUser.email 
         }, process.env.JWT_SECRET_KEY);
 
-        console.log(token, '<== TOKEN');
-
+        token = usertoken;
         done();
       })
       .catch(err => {
@@ -60,17 +59,25 @@ describe('Article', function() {
   });
 
   afterEach(function(done) {
-    Article.deleteMany({})
+    User.deleteMany({})
     .then(affected => {
-      done();
+
+      Article.deleteMany({})
+      .then(affected => {
+        done();
+      })
+      .catch(err => {
+        console.error(err);
+        done();
+      })
     })
     .catch(err => {
-      console.error(err);
+      console.error(err.message);
       done();
     })
   });
 
-  it('GET /article/ - should return array of object articles data', function(done) {  
+  it('GET /articles/ - should return array of object articles data', function(done) {  
     chai.request(app)
     .get('/articles/')
     .end(function(err, res) {
@@ -86,10 +93,12 @@ describe('Article', function() {
 
   });
 
-  it('POST /article/ - ', function(done) {
+  it('POST /articles/ - ', function(done) {
+
     chai.request(app)
     .post('/articles/')
     .type('form')
+    .set('token', token)
     .send({
       title: 'sample title -2',
       author: userId,
@@ -102,8 +111,6 @@ describe('Article', function() {
       } else {
           let response = res.body;
 
-          console.log(response);
-
           assert.equal(res.status, 200);
           assert.typeOf(response, 'object');
           assert.property(response, 'message');
@@ -113,4 +120,15 @@ describe('Article', function() {
         }
     });
   });
+
+  it('PUT /articles/:id - ', function(done) {
+    chai.request(app)
+    .put(`/articles/${articleId}`)
+    .type('form')
+    .set('token', token)
+    .send({
+      
+    });
+  })
+
 });
