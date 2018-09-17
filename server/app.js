@@ -19,4 +19,14 @@ const db = mongoose.connection;
 
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', () => console.log('Connected to mongooese...'));
+
+app.get('/article/', (req, res) => {
+  res.status(200).json({
+    message: 'success get all articles',
+    articles: []
+  });
+})
+
 app.listen(PORT, () => console.log('Listen in PORT: ' + PORT));
+
+module.exports = app;
