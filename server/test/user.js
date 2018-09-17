@@ -21,7 +21,7 @@ describe('User', function() {
       done();
     })
     .catch(err => {
-      throw err.message;
+      console.error(err.message);
       done();
     });
   });
@@ -32,22 +32,63 @@ describe('User', function() {
       done();
     })
     .catch(err => {
-      throw err.message;
+      console.error(err.message);
       done();
     })
   });
 
-  it('POST /users/signup should return new object user', function(done) {  
-    chai.request(app)
-    .('/users/signup')
-    .end(function(err, res) {
-      let response = res.body;
+  it('POST /users/signup - should return new object user', function(done) {
 
-      assert.equal(res.status, 200);
-      assert.typeOf(response, 'object');
-      assert.property(response, 'message');
-      assert.property(response, 'user');
-      done();
+    chai.request(app)
+    .post('/users/signup')
+    .type('form')
+    .send({
+      name: 'ivan',
+      email: 'ivan123@mail.com',
+      password: '123'
+    })
+    .end(function(err, res) {
+
+      if(err) {
+        console.error(err);
+        done();
+      } else {
+        let response = res.body;
+
+        assert.equal(res.status, 201);
+        assert.typeOf(response, 'object');
+        assert.property(response, 'message');
+        assert.property(response, 'user');
+        assert.property(response.user, 'name');
+        assert.property(response.user, 'email');
+        assert.property(response.user, 'password');
+        done();
+      }
+    });
+  });
+
+  it('POST /users/signin - ', function(done) {
+    chai.request(app)
+    .post('/users/signin')
+    .type('form')
+    .send({
+      email: 'ivan@mail.com',
+      password: '123'
+    })
+    .end(function(err, res) {
+
+      if(err) {
+        console.error(err);
+        done();
+      } else {
+        let response = res.body;
+
+        assert.equal(res.status, 200);
+        assert.typeOf(response, 'object');
+        assert.property(response, 'message');
+        assert.property(response, 'token');
+        done();
+      }
     });
   });
 })
