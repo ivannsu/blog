@@ -29,7 +29,7 @@ module.exports = {
 
     Article.create(input)
     .then(newArticle => {
-      res.status(500).json({
+      res.status(200).json({
         message: 'success create new article',
         article: newArticle
       });
@@ -42,10 +42,45 @@ module.exports = {
   },
 
   update(req, res) {
+    let articleId = req.params.id;
+    let author = req.decoded.id;
 
+    let input = {
+      title: req.body.title,
+      content: req.body.content,
+      updatedAt: new Date()
+    }
+
+    Article.findOne({ author: author })
+    .then(article => {
+      if(!article) {
+        res.status(500).json({
+          message: 'no article created by this author'
+        });  
+      } else {
+        Article.updateOne({ _id: articleId }, input)
+        .then(affected => {
+          res.status(200).json({
+            message: 'success update article',
+            id: article._id
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            message: err.message
+          });
+        }); 
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    });
   },
 
   remove(req, res) {
-
+    let articleId = req.params.id;
+    let userId = req.body.userId; 
   }
 }
