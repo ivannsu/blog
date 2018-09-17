@@ -77,7 +77,7 @@ describe('Article', function() {
     })
   });
 
-  it('GET /articles/ - should return array of object articles data', function(done) {  
+  it('GET /articles/ - dapatkan semua data artikel', function(done) {  
     chai.request(app)
     .get('/articles/')
     .end(function(err, res) {
@@ -93,7 +93,7 @@ describe('Article', function() {
 
   });
 
-  it('POST /articles/ - ', function(done) {
+  it('POST /articles/ - buat artikel baru', function(done) {
 
     chai.request(app)
     .post('/articles/')
@@ -121,13 +121,29 @@ describe('Article', function() {
     });
   });
 
-  it('PUT /articles/:id - ', function(done) {
+  it('PUT /articles/:id - update artikel berdasarkan id artikel', function(done) {
     chai.request(app)
     .put(`/articles/${articleId}`)
     .type('form')
     .set('token', token)
     .send({
-      
+      title: 'sample title -2',
+      content: 'updated: message'
+    })
+    .end(function(err, res) {
+      if(err) {
+        console.error(err);
+        done();
+      } else {
+        let response = res.body;
+
+        assert.equal(res.status, 200);
+        assert.typeOf(response, 'object');
+        assert.property(response, 'message');
+        assert.property(response, 'id');
+
+        done();
+      }
     });
   })
 
