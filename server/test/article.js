@@ -1,5 +1,6 @@
 const app = require('../app');
 const Article = require('../models/article');
+const User = require('../models/user');
 
 const chai = require('chai');
 const chaiHttp = require('chai-http');
@@ -10,6 +11,7 @@ chai.use(chaiHttp);
 describe('Article', function() {
 
   beforeEach(function(done) {
+
     let seed = {
       title: 'sample title',
       author: 'John Doe',
@@ -37,9 +39,9 @@ describe('Article', function() {
     })
   });
 
-  it('GET /article/ should return array of object articles data', function(done) {  
+  it('GET /article/ - should return array of object articles data', function(done) {  
     chai.request(app)
-    .get('/article/')
+    .get('/articles/')
     .end(function(err, res) {
       let response = res.body;
 
@@ -52,9 +54,18 @@ describe('Article', function() {
     });
 
   });
-  // it('should return object contain article data', function(done) {
-  //   done();
+
+  // it('POST /article/ - ', function(done) {
+  //   chai.request(app)
+  //   .post('/articles/')
+  //   .type('form')
+  //   .send({
+  //     title: 'sample title',
+  //     author: 'John Doe',
+  //     content: 'hello world'
+  //   })
+  //   .end(function(err, res) {
+
+  //   });
   // });
-  // it('should return object contain old article data before update', function() {});
-  // it('should return object contain deleted id', function() {});
 });
