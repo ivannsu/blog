@@ -55,6 +55,7 @@ describe('Article', function() {
 
         Comment.create(commentSeed)
         .then(newComment => {
+          commentId = newComment._id;
           done();
         })
         .catch(err => {
@@ -123,30 +124,32 @@ describe('Article', function() {
     .type('form')
     .set('token', token)
     .send({
-      title: 'sample title -2',
-      author: userId,
-      content: 'no coding no life :V'
+      user: userId,
+      content: 'no comment pak eko'
     })
     .end(function(err, res) {
       if(err) {
         console.error(err);
         done();
       } else {
-          let response = res.body;
+        let response = res.body;
 
-          assert.equal(res.status, 200);
-          assert.typeOf(response, 'object');
-          assert.property(response, 'message');
-          assert.property(response, 'article');
+        // console.log(response, '<========== CREATED COMMENT');
 
-          done();
+        assert.equal(res.status, 201);
+        assert.typeOf(response, 'object');
+        assert.property(response, 'message');
+        assert.property(response, 'comment');
+
+        done();
         }
     });
   });
 
   it('PUT /comments/:id - update komentar berdasarkan id komentar', function(done) {
+    
     chai.request(app)
-    .put(`/comments/${articleId}`)
+    .put(`/comments/${commentId}`)
     .type('form')
     .set('token', token)
     .send({
@@ -170,25 +173,28 @@ describe('Article', function() {
     });
   });
 
-  // it('DELETE /articles/:id - hapus artikel berdasarkan id artikel', function(done) {
-  //   chai.request(app)
-  //   .put(`/articles/${articleId}`)
-  //   .set('token', token)
-  //   .end(function(err, res) {
-  //     if(err) {
-  //       console.error(err);
-  //       done();
-  //     } else {
-  //       let response = res.body;
+  it('DELETE /comments/:id - hapus comment berdasarkan id comment', function(done) {
+    chai.request(app)
+    .put(`/comments/${commentId}`)
+    .set('token', token)
+    .end(function(err, res) {
+      if(err) {
+        console.error(err);
+        done();
+      } else {
+        let response = res.body;
 
-  //       assert.equal(res.status, 200);
-  //       assert.typeOf(response, 'object');
-  //       assert.property(response, 'message');
-  //       assert.property(response, 'id');
+        console.log(response, '<================ DELETE METHOD');
 
-  //       done();
-  //     }
-  //   });
-  // });
+        assert.equal(res.status, 200);
+        assert.typeOf(response, 'object');
+        assert.property(response, 'message');
+        assert.property(response, 'id');
+
+        done();
+      }
+    });
+  });
 
 });
+
