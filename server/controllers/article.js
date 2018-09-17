@@ -81,6 +81,33 @@ module.exports = {
 
   remove(req, res) {
     let articleId = req.params.id;
-    let userId = req.body.userId; 
+    let author = req.decoded.id;
+
+    Article.findOne({ author: author })
+    .then(article => {
+      if(!article) {
+        res.status(500).json({
+          message: 'no article created by this author'
+        });  
+      } else {
+        Article.deleteOne({ _id: articleId })
+        .then(affected => {
+          res.status(200).json({
+            message: 'success delete article',
+            id: article._id
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            message: err.message
+          });
+        }); 
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    });
   }
 }
