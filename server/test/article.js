@@ -22,6 +22,7 @@ describe('Article', function() {
     })
     .catch(err => {
       throw err;
+      done();
     });
   });
 
@@ -32,6 +33,7 @@ describe('Article', function() {
     })
     .catch(err => {
       throw err;
+      done();
     })
   });
 
@@ -50,7 +52,9 @@ describe('Article', function() {
     });
 
   });
-  it('should return object contain article data', function() {});
-  it('should return object contain old article data before update', function() {});
-  it('should return object contain deleted id', function() {});
+  // it('should return object contain article data', function(done) {
+  //   done();
+  // });
+  // it('should return object contain old article data before update', function() {});
+  // it('should return object contain deleted id', function() {});
 });
