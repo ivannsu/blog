@@ -2,7 +2,7 @@ const Article = require('../models/article');
 
 module.exports = {
   findAll(req, res) {
-    Article.find({})
+    Article.find({}).populate('author')
     .then(articles => {
       res.status(200).json({
         message: 'success get all articles data',
