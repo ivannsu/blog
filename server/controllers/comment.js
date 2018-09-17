@@ -5,33 +5,33 @@ module.exports = {
     Comment.find().populate('user')
     .then(comments => {
       res.status(200).json({
-        messsage: 'success get all comments',
-        comments
+        message: 'success get all comments',
+        comments: comments
       });
     })
     .catch(err => {
       res.status(500).json({
-        messsage: err.messsage
+        message: err.message
       });
     })
   },
 
   create(req, res) {
     let input = {
-      user: req.body.user,
+      user: req.decoded.id,
       content: req.body.content
     }
 
     Comment.create(input)
     .then(newComment => {
       res.status(201).json({
-        messsage: 'success create new comment',
+        message: 'success create new comment',
         comment: newComment
       });
     })
     .catch(err => {
       res.status(500).json({
-        messsage: err.messsage
+        message: err.message
       });
     });
   },
@@ -42,33 +42,63 @@ module.exports = {
 
     Comment.findOne({ _id: commentId, user: user })
     .then(comment => {
+
       if(!comment) {
         res.status(500).json({
-          messsage: 'no comment created by this user'
+          message: 'no comment created by this user'
         });
       } else {
         Comment.updateOne()
         .then(affected => {
           res.status(200).json({
-            messsage: 'success update comment',
+            message: 'success update comment',
             id: comment._id
           });
         })
         .catch(err => {
           res.status(500).json({
-            messsage: err.messsage
+            message: err.message
           });    
         });
       }
     })
     .catch(err => {
       res.status(500).json({
-        messsage: err.messsage
+        message: err.message
       });
     })
   },
 
   remove(req, res) {
+    let commentId = req.params.id;
+    let user = req.decoded.id;
 
+    Comment.findOne({ _id: commentId, user: user })
+    .then(comment => {
+
+      if(!comment) {
+        res.status(500).json({
+          message: 'no comment created by this user'
+        });
+      } else {
+        Comment.deleteOne()
+        .then(affected => {
+          res.status(200).json({
+            message: 'success delete comment',
+            id: comment._id
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            message: err.message
+          });    
+        });
+      }
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    })
   }
 }
