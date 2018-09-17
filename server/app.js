@@ -8,12 +8,14 @@ const PORT = process.env.PORT || 3000;
 
 const articleRoutes = require('./routes/article');
 const userRoutes = require('./routes/user');
+const commentRoutes = require('./routes/comment');
 
 app.use(cors());
 app.use(express.urlencoded({extended: false}));
 app.use(express.json());
 app.use('/articles', articleRoutes);
 app.use('/users', userRoutes);
+app.use('/comments', commentRoutes);
 
 if(process.env.NODE_ENV === 'test') {
   mongoose.connect('mongodb://localhost:27017/blog-test', { useNewUrlParser: true });
