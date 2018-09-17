@@ -3,6 +3,7 @@ require('dotenv').config();
 const app = require('../app');
 const Article = require('../models/article');
 const User = require('../models/user');
+const Comment = require('../models/comment');
 const crypt = require('../helpers/crypt');
 const jwt = require('jsonwebtoken');
 
@@ -14,6 +15,7 @@ chai.use(chaiHttp);
 
 let articleId;
 let userId;
+let commentId;
 let token;
 
 describe('Article', function() {
@@ -45,7 +47,20 @@ describe('Article', function() {
         }, process.env.JWT_SECRET_KEY);
 
         token = usertoken;
-        done();
+
+        let commentSeed = {
+          user: userId,
+          content: 'nice post man!'
+        }
+
+        Comment.create(commentSeed)
+        .then(newComment => {
+          done();
+        })
+        .catch(err => {
+          console.error(err.message);
+          done();
+        });
       })
       .catch(err => {
         console.error(err.message);
@@ -60,11 +75,19 @@ describe('Article', function() {
 
   afterEach(function(done) {
     User.deleteMany({})
-    .then(affected => {
+    .then(affectedUser => {
 
       Article.deleteMany({})
-      .then(affected => {
-        done();
+      .then(affectedArticle => {
+        
+        Comment.deleteMany({})
+        .then(affectedComment => {
+          done();
+        })
+        .catch(err => {
+          console.error(err);  
+          done();
+        })
       })
       .catch(err => {
         console.error(err);
@@ -77,26 +100,26 @@ describe('Article', function() {
     })
   });
 
-  it('GET /articles/ - dapatkan semua data artikel', function(done) {  
+  it('GET /comments/ - dapatkan semua data komentar', function(done) {  
     chai.request(app)
-    .get('/articles/')
+    .get('/comments/')
     .end(function(err, res) {
       let response = res.body;
 
       assert.equal(res.status, 200);
       assert.typeOf(response, 'object');
       assert.property(response, 'message');
-      assert.property(response, 'articles');
+      assert.property(response, 'comments');
 
       done();
     });
 
   });
 
-  it('POST /articles/ - buat artikel baru', function(done) {
+  it('POST /comments/ - buat komentar baru', function(done) {
 
     chai.request(app)
-    .post('/articles/')
+    .post('/comments/')
     .type('form')
     .set('token', token)
     .send({
@@ -121,9 +144,9 @@ describe('Article', function() {
     });
   });
 
-  it('PUT /articles/:id - update artikel berdasarkan id artikel', function(done) {
+  it('PUT /comments/:id - update komentar berdasarkan id komentar', function(done) {
     chai.request(app)
-    .put(`/articles/${articleId}`)
+    .put(`/comments/${articleId}`)
     .type('form')
     .set('token', token)
     .send({
@@ -147,25 +170,25 @@ describe('Article', function() {
     });
   });
 
-  it('DELETE /articles/:id - hapus artikel berdasarkan id artikel', function(done) {
-    chai.request(app)
-    .put(`/articles/${articleId}`)
-    .set('token', token)
-    .end(function(err, res) {
-      if(err) {
-        console.error(err);
-        done();
-      } else {
-        let response = res.body;
+  // it('DELETE /articles/:id - hapus artikel berdasarkan id artikel', function(done) {
+  //   chai.request(app)
+  //   .put(`/articles/${articleId}`)
+  //   .set('token', token)
+  //   .end(function(err, res) {
+  //     if(err) {
+  //       console.error(err);
+  //       done();
+  //     } else {
+  //       let response = res.body;
 
-        assert.equal(res.status, 200);
-        assert.typeOf(response, 'object');
-        assert.property(response, 'message');
-        assert.property(response, 'id');
+  //       assert.equal(res.status, 200);
+  //       assert.typeOf(response, 'object');
+  //       assert.property(response, 'message');
+  //       assert.property(response, 'id');
 
-        done();
-      }
-    });
-  });
+  //       done();
+  //     }
+  //   });
+  // });
 
 });
