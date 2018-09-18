@@ -19,7 +19,7 @@ export default {
   created () {
     axios({
       method: 'GET',
-      url: 'http://localhost:3001/articles'
+      url: `${this.$baseurl}/articles`
     })
       .then(response => {
         let articles = response.data.articles

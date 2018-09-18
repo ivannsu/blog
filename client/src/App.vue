@@ -17,11 +17,11 @@
             <router-link to="/about" class="nav-link">About</router-link>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
-          <input class="form-control mr-sm-1" type="email" placeholder="Email...">
-          <input class="form-control mr-sm-1" type="password" placeholder="Password...">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-        </form>
+        <div class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-1" type="email" placeholder="Email..." v-model="email">
+          <input class="form-control mr-sm-1" type="password" placeholder="Password..." v-model="password">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="button" @click="login">Login</button>
+        </div>
       </div>
     </nav>
      <div class="container" style="padding-top: 50px">
@@ -29,3 +29,23 @@
     </div>
    </div>
 </template>
+
+<script>
+
+// import axios from 'axios'
+
+export default {
+  data () {
+    return {
+      email: '',
+      password: ''
+    }
+  },
+  methods: {
+    login () {
+      console.log(this.email, this.password, '<==== DATA')
+    }
+  }
+}
+
+</script>

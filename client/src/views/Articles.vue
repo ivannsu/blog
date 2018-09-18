@@ -12,15 +12,9 @@ import Sidebar from '@/components/Sidebar.vue'
 
 export default {
   name: 'Articles',
-  props: ['articleId'],
   components: {
     AllArticles,
     Sidebar
-  },
-  watch: {
-    articleId () {
-      console.log(this.articleId, '<============= ADA')
-    }
   }
 }
 </script>

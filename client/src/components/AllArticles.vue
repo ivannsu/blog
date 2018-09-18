@@ -21,7 +21,7 @@
     -->
     <div class="row">
       <div class="col-lg-6 col-sm-6 portfolio-item" v-for="(article, index) in articles" :key="index">
-        <div class="card h-70">
+        <div class="card h-70 custom-card">
           <div class="card-body">
             <h4 class="card-title">
               {{ article.title }}
@@ -49,7 +49,7 @@ export default {
   created () {
     axios({
       method: 'GET',
-      url: 'http://localhost:3001/articles'
+      url: `${this.$baseurl}/articles`
     })
       .then(response => {
         let articles = response.data.articles
@@ -62,3 +62,11 @@ export default {
 }
 
 </script>
+
+<style scoped>
+
+.custom-card {
+  margin: 5px
+}
+
+</style>
