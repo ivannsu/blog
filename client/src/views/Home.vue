@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <Sidebar></Sidebar>
+    <Sidebar @get-detail="getDetail"></Sidebar>
     <Content></Content>
   </div>
 </template>
@@ -15,6 +15,11 @@ export default {
   components: {
     Content,
     Sidebar
+  },
+  methods: {
+    getDetail(id) {
+      
+    }
   }
 }
 </script>
