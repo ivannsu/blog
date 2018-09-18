@@ -20,40 +20,15 @@
     <hr>
     -->
     <div class="row">
-      <div class="col-lg-6 col-sm-6 portfolio-item">
-        <div class="card h-70">
-          <div class="card-body">
-            <h4 class="card-title">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-            </h4>
-            <p class="translate">
-              Author: John Doe
-            </p>
-          </div>
-        </div>
-      </div>
 
-      <div class="col-lg-6 col-sm-6 portfolio-item">
+      <div class="col-lg-6 col-sm-6 portfolio-item" v-for="article in articles">
         <div class="card h-70">
           <div class="card-body">
             <h4 class="card-title">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
+              {{ article.title }}
             </h4>
             <p class="translate">
-              Author: John Doe
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-6 col-sm-6 portfolio-item">
-        <div class="card h-70">
-          <div class="card-body">
-            <h4 class="card-title">
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua
-            </h4>
-            <p class="translate">
-              Author: John Doe
+              Author: {{ article.author.name }}
             </p>
           </div>
         </div>
@@ -105,8 +80,6 @@
 <script>
   import axios from 'axios'
 
-  console.log(baseurl, '<============== ');
-
   export default {
     name: 'Content',
     data() {
@@ -118,10 +91,17 @@
 
     },
     created() {
-      // axios({
-      //   method: 'GET',
-      //   url: ''
-      // });
+      axios({
+        method: 'GET',
+        url: 'http://localhost:3001/articles'
+      })
+      .then(response => {
+        let articles = response.data.articles;
+        this.articles = articles;
+      })
+      .catch(err => {
+        console.log(err.response.data);
+      });
     },
   }
 </script>
