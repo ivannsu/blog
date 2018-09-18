@@ -1,5 +1,6 @@
 <template>
   <div class="col-lg-9">
+    <!-- FORM POST
     <div class="row">
       <div class="col-lg-9 col-sm-9 portfolio-item">
         <form>
@@ -17,6 +18,7 @@
       </div>
     </div>
     <hr>
+    -->
     <div class="row">
       <div class="col-lg-6 col-sm-6 portfolio-item">
         <div class="card h-70">
