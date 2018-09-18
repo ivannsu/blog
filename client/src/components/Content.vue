@@ -103,8 +103,26 @@
 </template>
 
 <script>
+  import axios from 'axios'
+
+  console.log(baseurl, '<============== ');
+
   export default {
-    name: 'Content'
+    name: 'Content',
+    data() {
+      return {
+        articles: []
+      }
+    },
+    methods: {
+
+    },
+    created() {
+      // axios({
+      //   method: 'GET',
+      //   url: ''
+      // });
+    },
   }
 </script>
 
