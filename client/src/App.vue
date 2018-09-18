@@ -2,7 +2,7 @@
   <div id="app">
 
     <nav class="navbar navbar-expand-lg bg-dark">
-      <a class="navbar-brand" href="#">Blog</a>
+      <router-link to="/" class="navbar-brand">Blog</router-link>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -16,11 +16,11 @@
             <router-link to="/about" class="nav-link">About</router-link>
           </li>
         </ul>
-        <form class="form-inline my-2 my-lg-0">
+        <div class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-1" type="email" placeholder="Email...">
           <input class="form-control mr-sm-1" type="password" placeholder="Password...">
-          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Login</button>
-        </form>
+          <button class="btn btn-outline-success my-2 my-sm-0" type="button" @click="login">Login</button>
+        </div>
       </div>
     </nav>
 
@@ -30,6 +30,24 @@
 
   </div>
 </template>
+
+<script>
+  import axios from 'axios'
+
+  export default {
+    data() {
+      return {
+        email: '',
+        password: ''   
+      }
+    },
+    methods: {
+      login() {
+        
+      }
+    }
+  }
+</script>
 
 <style>
 
