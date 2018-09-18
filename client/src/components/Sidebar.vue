@@ -1,13 +1,13 @@
 <template>
   <div class="col-lg-3">
     <div class="list-group">
-      <a href="javascript:void(0)" class="list-group-item" v-for="article in articles" @click="getDetail(article._id)"> {{ article.title }} </a>
+      <router-link class="list-group-item" :to="{ name: '', params: { articleId: `${article._id}` } }" v-for="article in articles">{{ article.title }}</router-link>
     </div>
   </div>
 </template>
 
 <script>
-  import axios from 'axios';
+  import axios from 'axios'
 
   export default {
     name: 'Sidebar',
@@ -17,9 +17,7 @@
       }
     },
     methods: {
-      getDetail(id) {
-        this.$emit('get-detail', id);
-      }
+
     },
     created() {
       axios({
@@ -27,11 +25,11 @@
         url: 'http://localhost:3001/articles'
       })
       .then(response => {
-        let articles = response.data.articles;
-        this.articles = articles;
+        let articles = response.data.articles
+        this.articles = articles
       })
       .catch(err => {
-        console.log(err.response.data);
+        console.log(err.response.data)
       });
     },
   }

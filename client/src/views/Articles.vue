@@ -2,24 +2,23 @@
   <div class="row">
     <Sidebar></Sidebar>
     <Content></Content>
-    <router-view></router-view>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
 import axios from 'axios'
 import Content from '@/components/Content.vue'
 import Sidebar from '@/components/Sidebar.vue'
 
 export default {
-  name: 'home',
+  name: 'articles',
   components: {
-    Content,
+    Content, 
     Sidebar
-  },
-  methods: {
-    
   }
 }
 </script>
+
+<style>
+
+</style>

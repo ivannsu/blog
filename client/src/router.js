@@ -11,14 +11,12 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: Home,
-      children: [
-        {
-          path: ':id',
-          name: 'detail',
-          component: () => import('./views/Detail.vue')
-        }
-      ]
+      component: Home
+    },
+    {
+      path: '/articles',
+      name: 'articles',
+      component: () => import('./views/Articles.vue')
     },
     {
       path: '/about',
