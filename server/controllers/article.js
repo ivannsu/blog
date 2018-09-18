@@ -17,7 +17,20 @@ module.exports = {
   },
 
   findById(req, res) {
+    let id = req.params.id;
 
+    Article.findOne({_id: id}).populate('author').populate('comments')
+    .then(article => {
+      res.status(200).json({
+        message: 'success get article data',
+        article
+      });
+    })
+    .catch(err => {
+      res.status(500).json({
+        message: err.message
+      });
+    });
   },
 
   create(req, res) {
