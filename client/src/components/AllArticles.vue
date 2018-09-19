@@ -1,6 +1,12 @@
 <template>
   <div class="col-lg-9">
     <div class="row">
+    
+      <div class="lds-ripple-container" v-if="!article._id">
+        <div class="lds-ripple">
+          <div></div><div></div>
+        </div>
+      </div>
 
       <div class="col-lg-6 col-sm-6 portfolio-item" v-for="(article, index) in articles" :key="index">
         <div class="card h-70 custom-card">
