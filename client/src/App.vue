@@ -47,6 +47,9 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger" v-if="message !== ''">
+              {{ message }}
+            </div>
             <p>
               <input type="email" name="email" class="form-control" placeholder="Email..." v-model="email" />
             </p>
@@ -73,17 +76,22 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger" v-if="message !== ''">
+              {{ message }}
+            </div>
+            <p>
+              <input type="text" name="name" class="form-control" placeholder="Name..." v-model="name" />
+            </p>
             <p>
               <input type="email" name="email" class="form-control" placeholder="Email..." v-model="email" />
             </p>
-
             <p>
               <input type="password" name="password" class="form-control" placeholder="Password..." v-model="password" />
             </p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" @click="login">Login</button>
+            <button type="button" class="btn btn-primary" @click="register">Register</button>
           </div>
         </div>
       </div>
@@ -100,9 +108,11 @@ export default {
   name: 'LoginModal',
   data () {
     return {
+      name: '',
       email: '',
       password: '',
-      authenticated: false
+      authenticated: false,
+      message: ''
     }
   },
   methods: {
@@ -128,6 +138,31 @@ export default {
           self.password = ''
 
           $('#loginModal').modal('hide')
+        })
+        .catch(err => {
+          let message = err.response.data.message
+          self.message = message
+        })
+    },
+
+    register () {
+      let self = this
+
+      axios({
+        method: 'POST',
+        url: `${this.$baseurl}/users/signup`,
+        data: {
+          name: self.name,
+          email: self.email,
+          password: self.password
+        }
+      })
+        .then(response => {
+          self.name = ''
+          self.email = ''
+          self.password = ''
+
+          $('#registerModal').modal('hide')
         })
         .catch(err => {
           console.log(err.response.data)
