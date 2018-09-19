@@ -1,14 +1,14 @@
 <template>
   <div class="col-lg-9">
     <div class="row">
-    
-      <div class="lds-ripple-container" v-if="!article._id">
+
+      <div class="lds-ripple-container" v-if="articles.length === 0">
         <div class="lds-ripple">
           <div></div><div></div>
         </div>
       </div>
 
-      <div class="col-lg-6 col-sm-6 portfolio-item" v-for="(article, index) in articles" :key="index">
+      <div class="col-lg-6 col-sm-6 portfolio-item" v-for="(article, index) in articles" :key="index" v-else>
         <div class="card h-70 custom-card">
           <div class="card-body">
             <h4 class="card-title">
@@ -18,7 +18,7 @@
               Author: {{ article.author.name }}
             </p>
             <p>
-              <a href="javascript:void(0)">Edit</a> | <a href="javascript:void(0)">Delete</a>
+              <router-link :to="{ name: 'edit-article', params: { articleId: `${article._id}` } }">Edit</router-link> | Delete
             </p>
           </div>
         </div>

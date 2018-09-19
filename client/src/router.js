@@ -28,6 +28,12 @@ export default new Router({
           path: 'do/create',
           name: 'create-article',
           component: () => import('./views/CreateArticle.vue')
+        },
+        {
+          path: 'do/edit/:articleId',
+          name: 'edit-article',
+          props: true,
+          component: () => import('./views/EditArticle.vue')
         }
       ]
     },
