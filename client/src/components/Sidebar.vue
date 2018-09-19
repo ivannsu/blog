@@ -1,6 +1,7 @@
 <template>
   <div class="col-lg-3">
     <div class="list-group">
+      <router-link to="/articles/do/create" class="list-group-item bg-secondary text-white">Create New Post</router-link>
       <router-link  v-for="(article, index) in articles" :key="index" :to="{ name: 'detail-article', params: { articleId: `${article._id}` } }" class="list-group-item">{{ article.title }}</router-link>
     </div>
   </div>
