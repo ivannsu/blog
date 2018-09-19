@@ -23,6 +23,11 @@ export default new Router({
           name: 'detail-article',
           props: true,
           component: () => import('./views/Detail.vue')
+        },
+        {
+          path: 'do/create',
+          name: 'create-article',
+          component: () => import('./views/CreateArticle.vue')
         }
       ]
     },
