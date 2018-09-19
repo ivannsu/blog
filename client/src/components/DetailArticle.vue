@@ -1,7 +1,12 @@
 <template>
   <div class="col-lg-12 col-sm-12 portfolio-item">
     <hr>
-    <div class="card h-70">
+    <div class="lds-ripple-container" v-if="!article._id">
+      <div class="lds-ripple">
+        <div></div><div></div>
+      </div>
+    </div>
+    <div class="card h-70" v-else>
       <div class="card-body">
         <h4 class="card-title">
           {{ article.title }}
