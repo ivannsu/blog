@@ -10,6 +10,9 @@
           Author: {{ article.author.name }}
         </p>
       </div>
+      <div>
+        <h3>Comments</h3>
+      </div>
     </div>
   </div>
 </template>
