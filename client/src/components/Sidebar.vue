@@ -28,6 +28,8 @@ export default {
 
   },
   created () {
+    let self = this
+
     axios({
       method: 'GET',
       url: `${this.$baseurl}/articles`
@@ -36,10 +38,10 @@ export default {
         let articles = response.data.articles
 
         if (articles.length === 0) {
-          this.empty = true
+          self.empty = true
         } else {
-          this.articles = articles
-          this.empty = false
+          self.articles = articles
+          self.empty = false
         }
       })
       .catch(err => {
