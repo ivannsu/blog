@@ -1,8 +1,10 @@
 const Comment = require('../models/comment');
+const Article = require('../models/article');
 
 module.exports = {
   findAll(req, res) {
-    Comment.find().populate('user')
+    Comment.find()
+    .populate('user')
     .then(comments => {
       res.status(200).json({
         message: 'success get all comments',
@@ -17,6 +19,7 @@ module.exports = {
   },
 
   create(req, res) {
+    let articleId = req.body.articleId;
     let input = {
       user: req.decoded.id,
       content: req.body.content
@@ -24,10 +27,23 @@ module.exports = {
 
     Comment.create(input)
     .then(newComment => {
-      res.status(201).json({
-        message: 'success create new comment',
-        comment: newComment
-      });
+
+      Article.updateOne(
+        { _id: articleId },
+        { $push: { comments: newComment._id } }
+      )
+      .then(affected => {
+        res.status(201).json({
+          message: 'success create new comment',
+          comment: newComment,
+          articleId: articleId
+        });
+      })
+      .catch(err => {
+        res.status(500).json({
+          message: err.message
+        });
+      })
     })
     .catch(err => {
       res.status(500).json({
