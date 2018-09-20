@@ -14,10 +14,13 @@
           <router-link to="/articles" class="nav-link">Articles</router-link>
         </li>
       </ul>
-      <div class="form-inline">
-        <button class="btn btn-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#signinModal">Sign In</button>
+      <div class="form-inline" v-if="!authenticated">
+        <button class="btn btn-outline-info my-2 my-sm-0" type="button" data-toggle="modal" data-target="#signinModal">Sign In</button>
         &nbsp;
         <button class="btn btn-success my-2 my-sm-0" type="button" data-toggle="modal" data-target="#signupModal">Sign Up</button>
+      </div>
+      <div class="form-inline" v-else>
+        <button class="btn btn-danger" type="button" @click="logout">Logout</button>
       </div>
     </div>
 
@@ -115,14 +118,17 @@ export default {
       })
         .then(response => {
           let data = response.data
-          let token = data.token
-          localStorage.setItem('token', token)
+
+          localStorage.setItem('userId', data.userId)
+          localStorage.setItem('token', data.token)
           self.authenticated = true
           self.email = ''
           self.password = ''
 
           // eslint-disable-next-line
           $('#signinModal').modal('hide')
+          self.$emit('authentication', self.authenticated)
+          self.$router.push({ name: 'articles' })
         })
         .catch(err => {
           let message = err.response.data.message
@@ -156,7 +162,20 @@ export default {
     },
     logout () {
       localStorage.removeItem('token')
+      localStorage.removeItem('userId')
+
       this.authenticated = false
+      this.$router.push({ name: 'home' })
+    }
+  },
+  created () {
+    let userId = localStorage.getItem('userId')
+    let token = localStorage.getItem('token')
+
+    if (!userId && !token) {
+      this.authenticated = false
+    } else {
+      this.authenticated = true
     }
   }
 }
