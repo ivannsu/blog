@@ -13,6 +13,9 @@
     </div>
     <div class="form-input text-left" style="margin-top: 60px">
       <h4>Add Comment</h4>
+      <div class="alert alert-danger" v-if="!token">
+        Your must login to comment
+      </div>
       <p>
         <textarea rows="3" class="form-control" placeholder="Write your comment..." v-model="commentContent"></textarea>
       </p>
@@ -20,6 +23,22 @@
         <button type="button" class="btn btn-primary" disabled v-if="!commentContent">Send</button>
         <button type="button" class="btn btn-primary" @click="comment" v-else>Send</button>
       </p>
+    </div>
+    <div style="margin-top: 40px">
+      <h4 class="text-left">All Comments</h4>
+      <div class="loader-container" v-if="!article && !empty">
+        <div class="loader"></div>
+      </div>
+      <div class="row" v-else style="padding-bottom: 30px">
+        <div class="col-sm-6" v-for="(comment, index) in article.comments" :key="index">
+          <div class="card">
+            <div class="card-body">
+              <!-- <h5 class="card-title"></h5> -->
+              <p class="card-text">{{ comment.content }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -34,24 +53,37 @@ export default {
     return {
       article: null,
       empty: false,
-      commentContent: ''
+      commentContent: '',
+      token: ''
     }
   },
   methods: {
     comment () {
       let self = this
 
-      console.log(this.articleId)
-      console.log(this.commentContent)
-
       axios({
         method: 'POST',
-        url: `${this.$baseurl}/`
+        url: `${this.$baseurl}/comments/`,
+        headers: {
+          token: self.token
+        },
+        data: {
+          articleId: self.articleId,
+          content: self.commentContent
+        }
       })
+        .then(response => {
+          self.$route.push({ path: `/articles/${self.articleId}` })
+        })
+        .catch(err => {
+          console.log(err.response.data)
+        })
     }
   },
   created () {
     let self = this
+
+    self.token = localStorage.getItem('token')
 
     axios({
       method: 'GET',
@@ -74,6 +106,8 @@ export default {
   watch: {
     articleId (newVal) {
       let self = this
+
+      self.token = localStorage.getItem('token')
 
       axios({
         method: 'GET',
