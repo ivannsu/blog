@@ -13,7 +13,7 @@
             <h5 class="card-title text-left"><strong>{{ article.title }}</strong></h5>
             <p class="card-text text-justify text-muted">Author: {{ article.author.name }}</p>
             <div v-if="article.author._id === userId">
-              <a href="#" class="card-link text-success">Edit</a>
+              <router-link :to="{ name: 'edit-article', params: { articleId: `${article._id}` } }" class="card-link text-success">Edit</router-link>
               <a href="#" class="card-link text-danger">Delete</a>
             </div>
           </div>
@@ -59,6 +59,9 @@ export default {
     }
   },
   created () {
+    let userId = localStorage.getItem('userId')
+
+    this.userId = userId
     this.fetchData()
   }
 
