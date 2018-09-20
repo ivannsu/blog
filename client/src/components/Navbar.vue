@@ -32,16 +32,20 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger text-left" v-if="signInMessage !== ''">
+              {{ signInMessage }}
+            </div>
+
             <div class="form-group">
-              <input type="email" name="email" class="form-control" placeholder="Enter your email...">
+              <input type="email" name="email" class="form-control" placeholder="Enter your email..." v-model="email">
             </div>
             <div class="form-group">
-              <input type="password" name="password" class="form-control" placeholder="Enter your password...">
+              <input type="password" name="password" class="form-control" placeholder="Enter your password..." v-model="password">
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Sign In</button>
+            <button type="button" class="btn btn-primary" @click="signin">Sign In</button>
           </div>
         </div>
       </div>
@@ -58,19 +62,23 @@
             </button>
           </div>
           <div class="modal-body">
+            <div class="alert alert-danger text-left" v-if="signUpMessage !== ''">
+              {{ signUpMessage }}
+            </div>
+
             <div class="form-group">
-              <input type="text" name="name" class="form-control" placeholder="Enter your name...">
+              <input type="text" name="name" class="form-control" placeholder="Enter your name..." v-model="name">
             </div>
             <div class="form-group">
-              <input type="email" name="email" class="form-control" placeholder="Enter your email...">
+              <input type="email" name="email" class="form-control" placeholder="Enter your email..." v-model="email">
             </div>
             <div class="form-group">
-              <input type="password" name="password" class="form-control" placeholder="Enter your password...">
+              <input type="password" name="password" class="form-control" placeholder="Enter your password..." v-model="password">
             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Sign Up</button>
+            <button type="button" class="btn btn-primary" @click="signup">Sign Up</button>
           </div>
         </div>
       </div>
@@ -79,9 +87,80 @@
 </template>
 
 <script>
+import axios from 'axios'
 
 export default {
-  name: 'Navbar'
+  name: 'Navbar',
+  data () {
+    return {
+      name: '',
+      email: '',
+      password: '',
+      authenticated: false,
+      signUpMessage: '',
+      signInMessage: ''
+    }
+  },
+  methods: {
+    signin () {
+      let self = this
+
+      axios({
+        method: 'POST',
+        url: `${this.$baseurl}/users/signin`,
+        data: {
+          email: self.email,
+          password: self.password
+        }
+      })
+        .then(response => {
+          let data = response.data
+          let token = data.token
+          localStorage.setItem('token', token)
+          self.authenticated = true
+          self.email = ''
+          self.password = ''
+
+          // eslint-disable-next-line
+          $('#signinModal').modal('hide')
+        })
+        .catch(err => {
+          let message = err.response.data.message
+          self.signInMessage = message
+        })
+    },
+    signup () {
+      let self = this
+
+      console.log(this.name, this.email, this.password, '<======== SIGNUP')
+
+      axios({
+        method: 'POST',
+        url: `${this.$baseurl}/users/signup`,
+        data: {
+          name: self.name,
+          email: self.email,
+          password: self.password
+        }
+      })
+        .then(response => {
+          self.name = ''
+          self.email = ''
+          self.password = ''
+
+          // eslint-disable-next-line
+          $('#signupModal').modal('hide')
+        })
+        .catch(err => {
+          let message = err.response.data.message
+          self.signUpMessage = message
+        })
+    },
+    logout () {
+      localStorage.removeItem('token')
+      this.authenticated = false
+    }
+  }
 }
 
 </script>
