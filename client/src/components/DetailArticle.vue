@@ -85,6 +85,23 @@ export default {
           console.log(err.response.data)
         })
     },
+    remove (id) {
+      let self = this
+
+      axios({
+        method: 'DELETE',
+        url: `${this.$baseurl}/comments/${id}`,
+        headers: {
+          token: this.token
+        }
+      })
+        .then(response => {
+          self.fetchData()
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+        })
+    },
     fetchData () {
       let self = this
 
