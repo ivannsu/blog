@@ -4,7 +4,7 @@
     <div class="container-fluid">
       <div class="row" style="padding-top: 30px">
       <Sidebar/>
-      <router-view></router-view>
+      <router-view :authentication="authenticationStat"></router-view>
     </div>
     </div>
   </div>
@@ -16,9 +16,23 @@ import Sidebar from '@/components/Sidebar.vue'
 
 export default {
   name: 'Articles',
+  props: ['authentication'],
   components: {
     Navbar,
     Sidebar
+  },
+  data () {
+    return {
+      authenticationStat: null
+    }
+  },
+  created () {
+    this.authenticationStat = this.authentication
+  },
+  watch: {
+    authentication (val) {
+      this.authenticationStat = val
+    }
   }
 }
 

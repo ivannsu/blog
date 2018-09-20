@@ -48,7 +48,7 @@ import axios from 'axios'
 
 export default {
   name: 'DetailArticle',
-  props: ['articleId'],
+  props: ['articleId', 'authentication'],
   data () {
     return {
       article: null,
@@ -73,11 +73,14 @@ export default {
         }
       })
         .then(response => {
-          self.$route.push({ path: `/articles/${self.articleId}` })
+          self.$router.push({ path: `/articles/detail/${self.articleId}` })
         })
         .catch(err => {
           console.log(err.response.data)
         })
+    },
+    fetchData () {
+
     }
   },
   created () {

@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Navbar/>
-    <router-view/>
+    <Navbar @authentication="getAuthentication"/>
+    <router-view :authentication="authentication" />
   </div>
 </template>
 
@@ -12,6 +12,16 @@ export default {
   name: 'app',
   components: {
     Navbar
+  },
+  data () {
+    return {
+      authentication: false
+    }
+  },
+  methods: {
+    getAuthentication (authentication) {
+      this.authentication = authentication
+    }
   }
 }
 
