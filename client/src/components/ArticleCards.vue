@@ -14,7 +14,7 @@
             <p class="card-text text-justify text-muted">Author: {{ article.author.name }}</p>
             <div v-if="article.author._id === userId">
               <router-link :to="{ name: 'edit-article', params: { articleId: `${article._id}` } }" class="card-link text-success">Edit</router-link>
-              <a href="#" class="card-link text-danger">Delete</a>
+              <a href="javascript:void(0)" class="card-link text-danger" @click="remove(article._id)">Delete</a>
             </div>
           </div>
         </div>
@@ -52,6 +52,23 @@ export default {
             self.articles = articles
             self.empty = false
           }
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+        })
+    },
+    remove (id) {
+      let self = this
+
+      axios({
+        method: 'DELETE',
+        url: `${this.$baseurl}/articles/${id}`,
+        headers: {
+          token: localStorage.getItem('token')
+        }
+      })
+        .then(response => {
+          self.fetchData()
         })
         .catch(err => {
           console.log(err.response.data.message)
