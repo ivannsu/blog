@@ -1,5 +1,6 @@
 const Comment = require('../models/comment');
 const Article = require('../models/article');
+const User = require('../models/user');
 
 module.exports = {
   findAll(req, res) {
@@ -19,37 +20,47 @@ module.exports = {
   },
 
   create(req, res) {
-    let articleId = req.body.articleId;
-    let input = {
-      user: req.decoded.id,
-      content: req.body.content
-    }
 
-    Comment.create(input)
-    .then(newComment => {
+    User.findOne({_id: req.decoded.id})
+    .then(user => {
+      let articleId = req.body.articleId;
+      let input = {
+        user: user.name,
+        userId: req.decoded.id,
+        content: req.body.content
+      }
 
-      Article.updateOne(
-        { _id: articleId },
-        { $push: { comments: newComment._id } }
-      )
-      .then(affected => {
-        res.status(201).json({
-          message: 'success create new comment',
-          comment: newComment,
-          articleId: articleId
-        });
+      Comment.create(input)
+      .then(newComment => {
+
+        Article.updateOne(
+          { _id: articleId },
+          { $push: { comments: newComment._id } }
+        )
+        .then(affected => {
+          res.status(201).json({
+            message: 'success create new comment',
+            comment: newComment,
+            articleId: articleId
+          });
+        })
+        .catch(err => {
+          res.status(500).json({
+            message: err.message
+          });
+        })
       })
       .catch(err => {
         res.status(500).json({
           message: err.message
         });
-      })
+      });
     })
     .catch(err => {
       res.status(500).json({
         message: err.message
       });
-    });
+    })
   },
 
   update(req, res) {
