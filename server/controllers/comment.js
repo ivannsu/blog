@@ -67,7 +67,7 @@ module.exports = {
     let commentId = req.params.id;
     let user = req.decoded.id;
 
-    Comment.findOne({ _id: commentId, user: user })
+    Comment.findOne({ _id: commentId, userId: user })
     .then(comment => {
 
       if(!comment) {
@@ -100,7 +100,7 @@ module.exports = {
     let commentId = req.params.id;
     let user = req.decoded.id;
 
-    Comment.findOne({ _id: commentId, user: user })
+    Comment.findOne({ _id: commentId, userId: user })
     .then(comment => {
 
       if(!comment) {
