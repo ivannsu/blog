@@ -33,8 +33,12 @@
         <div class="col-sm-6" v-for="(comment, index) in article.comments" :key="index">
           <div class="card">
             <div class="card-body">
-              <!-- <h5 class="card-title"></h5> -->
-              <p class="card-text">{{ comment.content }}</p>
+              <p class="card-title text-left">By: <strong>{{ comment.user }}</strong></p>
+              <p class="card-text text-left">{{ comment.content }}</p>
+              <div v-if="comment.userId === userId">
+                <!-- <router-link :to="{ name: 'edit-article', params: { articleId: `${article._id}` } }" class="card-link text-success">Edit</router-link> -->
+                <a href="javascript:void(0)" class="card-link text-danger" @click="remove(comment._id)">Delete</a>
+              </div>
             </div>
           </div>
         </div>
@@ -54,7 +58,8 @@ export default {
       article: null,
       empty: false,
       commentContent: '',
-      token: ''
+      token: '',
+      userId: ''
     }
   },
   methods: {
@@ -73,38 +78,40 @@ export default {
         }
       })
         .then(response => {
-          self.$router.push({ path: `/articles/detail/${self.articleId}` })
+          self.commentContent = ''
+          self.fetchData()
         })
         .catch(err => {
           console.log(err.response.data)
         })
     },
     fetchData () {
+      let self = this
 
+      self.token = localStorage.getItem('token')
+
+      axios({
+        method: 'GET',
+        url: `${this.$baseurl}/articles/${this.articleId}`
+      })
+        .then(response => {
+          let article = response.data.article
+
+          if (!article) {
+            self.empty = false
+          } else {
+            self.empty = true
+            self.article = article
+          }
+        })
+        .catch(err => {
+          console.log(err.response.data.message)
+        })
     }
   },
   created () {
-    let self = this
-
-    self.token = localStorage.getItem('token')
-
-    axios({
-      method: 'GET',
-      url: `${this.$baseurl}/articles/${this.articleId}`
-    })
-      .then(response => {
-        let article = response.data.article
-
-        if (!article) {
-          self.empty = false
-        } else {
-          self.empty = true
-          self.article = article
-        }
-      })
-      .catch(err => {
-        console.log(err.response.data.message)
-      })
+    this.userId = localStorage.getItem('userId')
+    this.fetchData()
   },
   watch: {
     articleId (newVal) {
@@ -135,6 +142,10 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+
+.card {
+  margin: 5px;
+}
 
 </style>
