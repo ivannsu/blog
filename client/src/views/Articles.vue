@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar/>
+    <!-- <Navbar @authentication="getAuthentication" /> -->
     <div class="container-fluid">
       <div class="row" style="padding-top: 30px">
       <Sidebar/>
