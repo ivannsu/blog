@@ -132,8 +132,6 @@ export default {
     signup () {
       let self = this
 
-      console.log(this.name, this.email, this.password, '<======== SIGNUP')
-
       axios({
         method: 'POST',
         url: `${this.$baseurl}/users/signup`,
