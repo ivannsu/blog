@@ -5,6 +5,10 @@ const jwt = require('jsonwebtoken');
 const crypt = require('../helpers/crypt');
 
 module.exports = {
+  findById(req, res) {
+
+  },
+
   signup(req, res) {
     let input = {
       name: req.body.name,
@@ -61,6 +65,7 @@ module.exports = {
 
         res.status(200).json({
           message: 'success sign in',
+          userId: user._id,
           token
         });
       }
