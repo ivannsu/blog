@@ -32,6 +32,12 @@ export default new Router({
           name: 'detail-article',
           props: true,
           component: () => import('./components/DetailArticle.vue')
+        },
+        {
+          path: 'edit/:articleId',
+          name: 'edit-article',
+          props: true,
+          component: () => import('./components/EditArticle.vue')
         }
       ]
     },
