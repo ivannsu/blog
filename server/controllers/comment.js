@@ -108,7 +108,7 @@ module.exports = {
           message: 'no comment created by this user'
         });
       } else {
-        Comment.deleteOne()
+        comment.remove()
         .then(affected => {
           res.status(200).json({
             message: 'success delete comment',
