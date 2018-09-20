@@ -1,6 +1,7 @@
 <template>
   <div class="hello">
     <h1>Welcome</h1>
+    <router-link to="/articles">See all news in here</router-link>
   </div>
 </template>
 
