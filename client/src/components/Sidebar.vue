@@ -1,7 +1,7 @@
 <template>
   <div class="col-lg-3">
     <div class="list-group">
-      <router-link to="/" class="list-group-item bg-secondary text-white">Create New Post</router-link>
+      <router-link to="/articles/create" class="list-group-item bg-secondary text-white">Create New Post</router-link>
     </div>
     <div class="loader-container" v-if="articles.length === 0 && !empty">
       <div class="loader"></div>
