@@ -162,6 +162,7 @@ export default {
       localStorage.removeItem('userId')
 
       this.authenticated = false
+      this.$emit('authentication', this.authenticated)
       this.$router.push({ name: 'home' })
     }
   },
