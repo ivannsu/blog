@@ -5,7 +5,6 @@ const User = require('../models/user');
 module.exports = {
   findAll(req, res) {
     Comment.find()
-    .populate('user')
     .then(comments => {
       res.status(200).json({
         message: 'success get all comments',
@@ -67,7 +66,7 @@ module.exports = {
     let commentId = req.params.id;
     let user = req.decoded.id;
 
-    Comment.findOne({ _id: commentId, userId: user })
+    Comment.findOne({ _id: commentId, user: user })
     .then(comment => {
 
       if(!comment) {
@@ -100,7 +99,7 @@ module.exports = {
     let commentId = req.params.id;
     let user = req.decoded.id;
 
-    Comment.findOne({ _id: commentId, userId: user })
+    Comment.findOne({ _id: commentId, user: user })
     .then(comment => {
 
       if(!comment) {

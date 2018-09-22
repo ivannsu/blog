@@ -147,7 +147,7 @@ describe('Article', function() {
   });
 
   it('PUT /comments/:id - update komentar berdasarkan id komentar', function(done) {
-    
+
     chai.request(app)
     .put(`/comments/${commentId}`)
     .type('form')
