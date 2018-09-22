@@ -1,10 +1,9 @@
 <template>
   <div>
-    <!-- <Navbar @authentication="getAuthentication" /> -->
     <div class="container-fluid">
       <div class="row" style="padding-top: 30px">
-      <Sidebar/>
-      <router-view :authentication="authenticationStat"></router-view>
+      <Sidebar :authentication="authentication"/>
+      <router-view></router-view>
     </div>
     </div>
   </div>
@@ -20,19 +19,6 @@ export default {
   components: {
     Navbar,
     Sidebar
-  },
-  data () {
-    return {
-      authenticationStat: null
-    }
-  },
-  created () {
-    this.authenticationStat = this.authentication
-  },
-  watch: {
-    authentication (val) {
-      this.authenticationStat = val
-    }
   }
 }
 
