@@ -1,6 +1,6 @@
 <template>
   <div class="col-lg-3">
-    <div class="list-group">
+    <div class="list-group" v-if="authentication">
       <router-link to="/articles/create" class="list-group-item bg-secondary text-white">Create New Post</router-link>
     </div>
     <div class="loader-container" v-if="articles.length === 0 && !empty">
@@ -18,6 +18,7 @@ import axios from 'axios'
 
 export default {
   name: 'Sidebar',
+  props: ['authentication'],
   data () {
     return {
       articles: [],
