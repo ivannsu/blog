@@ -20,7 +20,7 @@ app.use('/comments', commentRoutes);
 if(process.env.NODE_ENV === 'test') {
   mongoose.connect('mongodb://localhost:27017/blog-test', { useNewUrlParser: true });
 } else {
-  mongoose.connect('mongodb://localhost:27017/blog', { useNewUrlParser: true });
+  mongoose.connect('mongodb://blog:blog123@ds123971.mlab.com:23971/blog', { useNewUrlParser: true });
 }
 const db = mongoose.connection;
 
