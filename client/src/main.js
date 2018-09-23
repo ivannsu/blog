@@ -4,7 +4,11 @@ import router from './router'
 
 Vue.config.productionTip = false
 
-Vue.prototype.$baseurl = 'http://localhost:3001'
+// Development
+// Vue.prototype.$baseurl = 'http://localhost:3001'
+
+// Production
+Vue.prototype.$baseurl = 'https://pacific-castle-72119.herokuapp.com'
 
 new Vue({
   router,
